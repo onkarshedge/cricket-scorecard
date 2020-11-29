@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class MatchTest {
 
     @Test
-    void shouldUpdateOpeningBatsmenRunsAfterFirstOver() {
+    void shouldUpdateScorecardAfterFirstOver() {
         Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
         Match match = new Match(teams._1, teams._2, 2);
 
@@ -68,7 +68,7 @@ class MatchTest {
     }
 
     @Test
-    void shouldUpdateScoreBoardAfterSecondOver() {
+    void shouldUpdateScorecardAfterSecondOver() {
         Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
         Match match = new Match(teams._1, teams._2, 2);
         playFirstInnings(match);
@@ -106,7 +106,7 @@ class MatchTest {
     }
 
     @Test
-    void shouldUpdateScoreBoardFor2ndInnings() {
+    void shouldUpdateScorecardFor2ndInnings() {
         Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
         Match match = new Match(teams._1, teams._2, 2);
 
@@ -184,5 +184,4 @@ class MatchTest {
         match.updateScorecard(secondOverOutcomes);
 
     }
-
 }
