@@ -9,14 +9,14 @@ import java.util.Map;
 @Getter
 @Setter
 public class Batsman {
-    private String playerName;
+    private String name;
     private BatsmenStatus status;
     private int score = 0;
     private Map<Run, Integer> runMap;
     private int ballsFaced = 0;
 
-    public Batsman(String playerName) {
-        this.playerName = playerName;
+    public Batsman(String name) {
+        this.name = name;
         this.status = BatsmenStatus.YET_TO_BAT;
         this.runMap = new HashMap<>();
     }

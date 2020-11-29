@@ -7,7 +7,7 @@ import java.util.Map;
 
 @Getter
 public class Bowler {
-    private final String playerName;
+    private final String name;
     private int wickets;
     private int maidenOvers;
     private int numberOfOvers;
@@ -17,8 +17,8 @@ public class Bowler {
 
     private final Map<Run, Integer> runMap;
 
-    public Bowler(String playerName) {
-        this.playerName = playerName;
+    public Bowler(String name) {
+        this.name = name;
         this.runMap = new HashMap<>();
     }
 

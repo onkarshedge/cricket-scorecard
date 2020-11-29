@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter
-public class BattingOrder {
+public class Batsmen {
     private List<Batsman> value;
     private int upcomingPlayerIndex = 0;
 
-    public BattingOrder(List<Batsman> value) {
+    public Batsmen(List<Batsman> value) {
         this.value = value;
     }
 

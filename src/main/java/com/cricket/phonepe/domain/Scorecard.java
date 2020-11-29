@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public class Scorecard {
-    private final BattingOrder batsmen;
+    private final Batsmen batsmen;
     private Batsman batsmanOnStrike;
     private Batsman batsmanOnNonStrike;
     private Bowler currentBowler;
@@ -21,14 +21,15 @@ public class Scorecard {
     private double numberOfBalls;
     private int wickets;
 
-    public Scorecard(BattingOrder battingOrder, List<Bowler> bowlers) {
-        this.batsmen = battingOrder;
-        batsmanOnStrike = batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
+    public Scorecard(Batsmen batsmen, List<Bowler> bowlers) {
+        this.batsmen = batsmen;
+        batsmanOnStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
         batsmanOnStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_ON_STRIKE);
-        batsmanOnNonStrike = batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
+        batsmanOnNonStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
         batsmanOnNonStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_NON_STRIKE);
 
-        this.bowlers = bowlers.stream().collect(Collectors.toMap(Bowler::getPlayerName, bowler -> bowler));
+        this.currentBowler = bowlers.get(0);
+        this.bowlers = bowlers.stream().collect(Collectors.toMap(Bowler::getName, bowler -> bowler));
     }
 
     public int totalScore() {

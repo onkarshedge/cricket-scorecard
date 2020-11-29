@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 public class Team {
     private String name;
     private List<Player> players;
-    private final BattingOrder battingOrder;
+    private final Batsmen batsmen;
 
     public Team(String name, List<Player> players) {
         this.name = name;
-        this.battingOrder = new BattingOrder(players.stream()
+        this.batsmen = new Batsmen(players.stream()
                 .map((Player player) -> new Batsman(player.getName()))
                 .collect(Collectors.toList())
         );
@@ -33,12 +33,12 @@ public class Team {
 //        this.battingOrder = battingOrder;
 //    }
 
-    public BattingOrder getBattingOrder() {
-        return battingOrder;
+    public Batsmen getBattingOrder() {
+        return batsmen;
     }
 
     public boolean areAllOut() {
-        return battingOrder.noMoreBatsman();
+        return batsmen.noMoreBatsman();
     }
 
 }

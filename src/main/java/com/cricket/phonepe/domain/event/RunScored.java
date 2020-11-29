@@ -3,10 +3,10 @@ package com.cricket.phonepe.domain.event;
 import com.cricket.phonepe.domain.Run;
 import com.cricket.phonepe.domain.Scorecard;
 
-public class RunOutcome extends BallOutcome {
+public class RunScored extends BallOutcome {
     private final Run runs;
 
-    public RunOutcome(Run runs) {
+    public RunScored(Run runs) {
         this.runs = runs;
     }
 
