@@ -24,9 +24,7 @@ public class Scorecard {
     public Scorecard(Batsmen batsmen, List<Bowler> bowlers) {
         this.batsmen = batsmen;
         batsmanOnStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
-        batsmanOnStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_ON_STRIKE);
         batsmanOnNonStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
-        batsmanOnNonStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_NON_STRIKE);
 
         this.currentBowler = bowlers.get(0);
         this.bowlers = bowlers.stream().collect(Collectors.toMap(Bowler::getName, bowler -> bowler));
@@ -73,8 +71,6 @@ public class Scorecard {
         batsmanOnStrike = batsmanOnNonStrike;
         batsmanOnNonStrike = temp;
 
-        batsmanOnStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_ON_STRIKE);
-        batsmanOnNonStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_NON_STRIKE);
     }
 
     public void addExtras(Run runs) {
@@ -82,13 +78,9 @@ public class Scorecard {
     }
 
     public void handleWicket() {
-        batsmanOnStrike.setStatus(BatsmenStatus.OUT);
         this.wickets += 1;
         Optional<Batsman> batsman = this.batsmen.nextBatsman();
-        if (batsman.isPresent()) {
-            batsmanOnStrike = batsman.get();
-            batsmanOnStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_ON_STRIKE);
-        }
+        batsman.ifPresent(value -> batsmanOnStrike = value);
     }
 
     public Bowler getBowler(String name) {

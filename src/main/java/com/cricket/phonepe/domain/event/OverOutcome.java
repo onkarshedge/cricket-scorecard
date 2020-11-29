@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-@Getter
+
 public class OverOutcome {
     private final String bowlerName;
     private final InningType inningType;
@@ -25,4 +25,15 @@ public class OverOutcome {
         return ballOutcomes.stream().allMatch(ballOutcome -> ballOutcome.getRuns().equals(Run.ZERO));
     }
 
+    public String getBowlerName() {
+        return bowlerName;
+    }
+
+    public List<BallOutcome> getBallOutcomes() {
+        return ballOutcomes;
+    }
+
+    public InningType getInningType() {
+        return inningType;
+    }
 }
