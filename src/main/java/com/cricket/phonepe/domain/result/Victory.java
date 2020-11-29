@@ -5,8 +5,8 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Victory {
-    String winningTeam;
-    Either<ByRuns, ByWickets> by;
+    private final String winningTeam;
+    private final Either<ByRuns, ByWickets> by;
 
     public Victory(String winningTeam, Either<ByRuns, ByWickets> by) {
         this.winningTeam = winningTeam;
@@ -15,7 +15,7 @@ public class Victory {
 
     @EqualsAndHashCode
     public static final class ByRuns {
-        int numberOfRuns;
+        private final int numberOfRuns;
 
         public ByRuns(int numberOfRuns) {
             this.numberOfRuns = numberOfRuns;
@@ -29,7 +29,7 @@ public class Victory {
 
     @EqualsAndHashCode
     public static final class ByWickets {
-        int numberOfWickets;
+        private final int numberOfWickets;
 
         public ByWickets(int numberOfWickets) {
             this.numberOfWickets = numberOfWickets;

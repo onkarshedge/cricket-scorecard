@@ -5,7 +5,7 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode
 public class Result {
-    Either<Victory, Tie> value;
+    private final Either<Victory, Tie> value;
 
     public Result(Either<Victory, Tie> value) {
         this.value = value;
