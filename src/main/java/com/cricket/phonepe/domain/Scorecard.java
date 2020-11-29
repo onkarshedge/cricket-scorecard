@@ -3,6 +3,7 @@ package com.cricket.phonepe.domain;
 import com.cricket.phonepe.domain.event.OverOutcome;
 import lombok.Getter;
 
+import java.util.List;
 import java.util.Optional;
 
 @Getter
@@ -10,9 +11,9 @@ public class Scorecard {
     private final BattingOrder batsmen;
     private Batsman batsmanOnStrike;
     private Batsman batsmanOnNonStrike;
-    private int totalScore = 0;
     private int extras;
-    private int overs;
+    private double overs;
+    private double numberOfBalls;
     private int wickets;
 
     public Scorecard(BattingOrder battingOrder) {
@@ -31,22 +32,27 @@ public class Scorecard {
         return this.extras;
     }
 
-    public int overs() {
-        return this.overs;
+    public double overs() {
+        double overNumber = Math.floor(numberOfBalls / Constants.NUMBER_OF_BALLS_IN_AN_OVER);
+        double ballsInLastOver = (numberOfBalls % Constants.NUMBER_OF_BALLS_IN_AN_OVER) * 0.1;
+        return overNumber + ballsInLastOver;
     }
 
     public int wickets() {
         return this.wickets;
     }
 
+    public int wicketsRemaining() {
+        return batsmen.numberOfBatsmen() - wickets;
+    }
+
     public void update(OverOutcome overOutcomes) {
         overOutcomes.getBallOutcomes().forEach(ballOutcome -> ballOutcome.processScorecard(this));
         rotateStrike();
-        incrementOvers();
     }
 
-    private void incrementOvers() {
-        this.overs += 1;
+    public void incrementNumberOfBalls() {
+        this.numberOfBalls += 1;
     }
 
     public void rotateStrike() {

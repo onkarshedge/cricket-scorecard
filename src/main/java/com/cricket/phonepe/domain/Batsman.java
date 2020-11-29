@@ -13,7 +13,7 @@ public class Batsman {
     private BatsmenStatus status;
     private int score = 0;
     private Map<Run, Integer> runMap;
-    private int balls = 0;
+    private int ballsFaced = 0;
 
     public Batsman(String playerName) {
         this.playerName = playerName;
@@ -27,7 +27,7 @@ public class Batsman {
     }
 
     public void addBallsFaced(int ballsFaced) {
-        this.balls += ballsFaced;
+        this.ballsFaced += ballsFaced;
     }
 
     public int getFours() {

@@ -18,5 +18,6 @@ public class Wicket extends BallOutcome {
     public void processScorecard(Scorecard scorecard) {
         commonProcessing(scorecard);
         scorecard.handleWicket();
+        scorecard.incrementNumberOfBalls();
     }
 }

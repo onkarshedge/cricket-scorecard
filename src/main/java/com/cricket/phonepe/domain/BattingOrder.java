@@ -28,6 +28,10 @@ public class BattingOrder {
         return upcomingPlayerIndex >= value.size();
     }
 
+    public int numberOfBatsmen() {
+        return value.size();
+    }
+
     public int getTotalScore() {
         return value.stream().map(Batsman::getScore).reduce(0, Integer::sum);
     }

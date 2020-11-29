@@ -24,6 +24,7 @@ public class RunOutcome extends BallOutcome {
     public void processScorecard(Scorecard scorecard) {
         commonProcessing(scorecard);
         if (getPlayerRuns().shouldChangeStrike()) scorecard.rotateStrike();
+        scorecard.incrementNumberOfBalls();
     }
 
 

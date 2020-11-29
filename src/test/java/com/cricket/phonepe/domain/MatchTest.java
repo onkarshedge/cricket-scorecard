@@ -1,14 +1,19 @@
 package com.cricket.phonepe.domain;
 
+import com.cricket.phonepe.Result;
 import com.cricket.phonepe.domain.event.*;
+import com.cricket.phonepe.domain.inning.InningType;
 import io.vavr.Tuple2;
+import io.vavr.control.Either;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MatchTest {
 
@@ -32,7 +37,7 @@ class MatchTest {
 
         Scorecard scoreCard = match.getScoreCard(firstInning);
         assertThat(scoreCard.getBatsmen().getValue())
-                .extracting("playerName", "score", "fours", "sixes", "balls")
+                .extracting("playerName", "score", "fours", "sixes", "ballsFaced")
                 .contains(
                         tuple("T1P1", 3, 0, 0, 3),
                         tuple("T1P2", 4, 0, 0, 3),
@@ -53,7 +58,82 @@ class MatchTest {
     void shouldUpdateScoreBoardAfterSecondOver() {
         Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
         Match match = new Match(teams._1, teams._2, 2);
+        playFirstInnings(match);
 
+        InningType firstInning = InningType.FIRST;
+
+        Scorecard scoreCard = match.getScoreCard(firstInning);
+        assertThat(scoreCard.getBatsmen().getValue())
+                .extracting("playerName", "score", "fours", "sixes", "ballsFaced")
+                .contains(
+                        tuple("T1P1", 3, 0, 0, 4),
+                        tuple("T1P2", 10, 0, 1, 4),
+                        tuple("T1P3", 8, 2, 0, 3),
+                        tuple("T1P4", 1, 0, 0, 1),
+                        tuple("T1P5", 0, 0, 0, 0)
+                );
+        assertEquals(23, scoreCard.totalScore());
+        assertEquals(2, scoreCard.wickets());
+        assertEquals(2, scoreCard.overs());
+        assertEquals(1, scoreCard.extras());
+        assertEquals("T1P4", scoreCard.getBatsmanOnStrike().getPlayerName());
+        assertEquals("T1P2", scoreCard.getBatsmanOnNonStrike().getPlayerName());
+    }
+
+    @Test
+    void shouldUpdateScoreBoardFor2ndInnings() {
+        Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
+        Match match = new Match(teams._1, teams._2, 2);
+
+        playFirstInnings(match);
+        InningType secondInning = InningType.SECOND;
+
+        List<BallOutcome> firstOverBallOutComes = List.of(
+                new RunOutcome(Run.FOUR),
+                new RunOutcome(Run.SIX),
+                new Wicket(),
+                new Wicket(),
+                new RunOutcome(Run.SINGLE),
+                new RunOutcome(Run.SINGLE)
+        );
+        List<BallOutcome> secondOverBallOutComes = List.of(
+                new RunOutcome(Run.SIX),
+                new RunOutcome(Run.SINGLE),
+                new Wicket(),
+                new Wicket()
+        );
+
+        OverOutcome firstOverOutcomes = new OverOutcome(secondInning, 1, firstOverBallOutComes);
+        OverOutcome secondOverOutcomes = new OverOutcome(secondInning, 2, secondOverBallOutComes);
+
+        match.updateScorecard(firstOverOutcomes);
+        match.updateScorecard(secondOverOutcomes);
+
+        Scorecard scoreCard = match.getScoreCard(secondInning);
+        assertThat(scoreCard.getBatsmen().getValue())
+                .extracting("playerName", "score", "fours", "sixes", "ballsFaced")
+                .contains(
+                        tuple("T2P1", 10, 1, 1, 3),
+                        tuple("T2P2", 8, 0, 1, 3),
+                        tuple("T2P3", 0, 0, 0, 1),
+                        tuple("T2P4", 1, 0, 0, 2),
+                        tuple("T2P5", 0, 0, 0, 1)
+                );
+        assertEquals(19, scoreCard.totalScore());
+        assertEquals(4, scoreCard.wickets());
+        assertEquals(1.4, scoreCard.overs());
+        assertEquals(0, scoreCard.extras());
+        assertEquals("T2P2", scoreCard.getBatsmanOnStrike().getPlayerName());
+        assertEquals("T2P5", scoreCard.getBatsmanOnNonStrike().getPlayerName());
+
+        Optional<Result> optionalResult = match.getResult();
+        assertTrue(optionalResult.isPresent());
+
+        Result actualResult = optionalResult.get();
+        assertEquals(new Victory(teams._1.getName(), Either.left(new Victory.ByRuns(4))), actualResult.getValue().getLeft());
+    }
+
+    private void playFirstInnings(Match match) {
         List<BallOutcome> firstOverBallOutComes = List.of(
                 new RunOutcome(Run.SINGLE),
                 new RunOutcome(Run.SINGLE),
@@ -71,29 +151,13 @@ class MatchTest {
                 new RunOutcome(Run.SINGLE),
                 new RunOutcome(Run.SIX)
         );
-        InningType firstInning = InningType.FIRST;
-        OverOutcome firstOverOutcomes = new OverOutcome(firstInning, 1, firstOverBallOutComes);
-        OverOutcome secondOverOutcomes = new OverOutcome(firstInning, 1, secondOverBallOutComes);
+
+        OverOutcome firstOverOutcomes = new OverOutcome(InningType.FIRST, 1, firstOverBallOutComes);
+        OverOutcome secondOverOutcomes = new OverOutcome(InningType.FIRST, 2, secondOverBallOutComes);
 
         match.updateScorecard(firstOverOutcomes);
         match.updateScorecard(secondOverOutcomes);
 
-        Scorecard scoreCard = match.getScoreCard(firstInning);
-        assertThat(scoreCard.getBatsmen().getValue())
-                .extracting("playerName", "score", "fours", "sixes", "balls")
-                .contains(
-                        tuple("T1P1", 3, 0, 0, 4),
-                        tuple("T1P2", 10, 0, 1, 4),
-                        tuple("T1P3", 8, 2, 0, 3),
-                        tuple("T1P4", 1, 0, 0, 1),
-                        tuple("T1P5", 0, 0, 0, 0)
-                );
-        assertEquals(23, scoreCard.totalScore());
-        assertEquals(2, scoreCard.wickets());
-        assertEquals(2, scoreCard.overs());
-        assertEquals(1, scoreCard.extras());
-        assertEquals("T1P4", scoreCard.getBatsmanOnStrike().getPlayerName());
-        assertEquals("T1P2", scoreCard.getBatsmanOnNonStrike().getPlayerName());
     }
 
 }

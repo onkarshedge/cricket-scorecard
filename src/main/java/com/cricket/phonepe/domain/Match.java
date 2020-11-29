@@ -1,7 +1,13 @@
 package com.cricket.phonepe.domain;
 
 
+import com.cricket.phonepe.Result;
+import com.cricket.phonepe.Tie;
 import com.cricket.phonepe.domain.event.OverOutcome;
+import com.cricket.phonepe.domain.inning.FirstInning;
+import com.cricket.phonepe.domain.inning.InningType;
+import com.cricket.phonepe.domain.inning.SecondInning;
+import io.vavr.control.Either;
 
 import java.util.Optional;
 
@@ -35,17 +41,53 @@ public class Match {
         }
         if (overOutcomes.getInningType().equals(InningType.FIRST)) {
             firstInning.updateScorecard(overOutcomes);
-        } else {
-            if (getSecondInning().isEmpty() && firstInning.isComplete()) {
-                startSecondInning(firstInning.getScorecard().totalScore());
+            if (firstInning.isComplete() && getSecondInning().isEmpty()) {
+                startSecondInning(getRunsToChase());
             }
+        } else {
             secondInning.updateScorecard(overOutcomes);
         }
     }
 
-//    public boolean isComplete() {
-//        return firstInning.isComplete() && secondInning.isComplete(firstInning.getScorecard().totalScore());
-//    }
+    private int getRunsToChase() {
+        return firstInning.getScorecard().totalScore() + 1;
+    }
+
+    public boolean isComplete() {
+        return firstInning.isComplete() && secondInning.isComplete();
+    }
+
+    public Optional<Result> getResult() {
+        if (!isComplete()) {
+            return Optional.empty();
+        }
+        int runsRemainingToWin = secondInning.getRunsRemainingToWin();
+        if (runsRemainingToWin > 1) {
+            return Optional.of(
+                    new Result(
+                            Either.left(
+                                    new Victory(
+                                            firstInning.getBattingTeam().getName(),
+                                            Either.left(new Victory.ByRuns(runsRemainingToWin - 1))
+                                    )
+                            )
+                    )
+            );
+        } else if (runsRemainingToWin < 1) {
+            int wonByNumberOfWickets = secondInning.getWicketsRemaining();
+            return Optional.of(
+                    new Result(
+                            Either.left(
+                                    new Victory(
+                                            secondInning.getBattingTeam().getName(),
+                                            Either.right(new Victory.ByWickets(wonByNumberOfWickets))
+                                    )
+                            )
+                    )
+            );
+        }
+        return Optional.of(new Result(Either.right(new Tie())));
+    }
 
     private void startSecondInning(int runsToChase) {
         currentInning = InningType.SECOND;
@@ -58,7 +100,10 @@ public class Match {
     }
 
     public Scorecard getScoreCard(InningType inningType) {
-        return firstInning.getScorecard();
+        if (inningType.equals(InningType.FIRST))
+            return firstInning.getScorecard();
+
+        return secondInning.getScorecard();
     }
 
     public Optional<SecondInning> getSecondInning() {
