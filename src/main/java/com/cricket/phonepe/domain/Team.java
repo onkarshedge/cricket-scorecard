@@ -21,6 +21,12 @@ public class Team {
         return name;
     }
 
+    public List<Bowler> getBowlers() {
+        return players.stream()
+                .map((Player player) -> new Bowler(player.getName()))
+                .collect(Collectors.toList());
+    }
+
     //    public Team(String name, List<Player> players, BattingOrder battingOrder) {
 //        this.name = name;
 //        this.players = players;

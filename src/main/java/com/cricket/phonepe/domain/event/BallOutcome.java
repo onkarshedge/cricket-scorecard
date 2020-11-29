@@ -27,22 +27,3 @@ public abstract class BallOutcome {
     public abstract void processScorecard(Scorecard scorecard);
 }
 
-//
-//
-//public interface BallOutcome {
-//    Run getPlayerRuns();
-//
-//    Run getTeamRuns();
-//
-//    default int incrementBallsFaced() {
-//        return 1;
-//    }
-//
-//    default Run getRuns() {
-//        return getPlayerRuns().add(getTeamRuns());
-//    }
-//
-//    abstract processScorecard(Scorecard scorecard);
-//}
-
-

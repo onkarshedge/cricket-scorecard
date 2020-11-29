@@ -15,7 +15,7 @@ public abstract class Inning {
     public Inning(Team battingTeam, Team bowlingTeam, int totalOvers) {
         this.battingTeam = battingTeam;
         this.bowlingTeam = bowlingTeam;
-        this.scorecard = new Scorecard(battingTeam.getBattingOrder());
+        this.scorecard = new Scorecard(battingTeam.getBattingOrder(), bowlingTeam.getBowlers());
         this.totalOvers = totalOvers;
     }
 

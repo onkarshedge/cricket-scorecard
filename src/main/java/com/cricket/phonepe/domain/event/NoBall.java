@@ -17,6 +17,7 @@ public class NoBall extends BallOutcome {
     @Override
     public void processScorecard(Scorecard scorecard) {
         commonProcessing(scorecard);
+        scorecard.getCurrentBowler().incrementNoBall();
     }
 }
 

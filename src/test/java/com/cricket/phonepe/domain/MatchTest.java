@@ -32,7 +32,7 @@ class MatchTest {
                 new RunOutcome(Run.DOUBLE)
         );
         InningType firstInning = InningType.FIRST;
-        OverOutcome overOutcomes = new OverOutcome(firstInning, 1, firstOverBallOutComes);
+        OverOutcome overOutcomes = new OverOutcome("T2P1", firstInning, 1, firstOverBallOutComes);
 
         match.updateScorecard(overOutcomes);
 
@@ -104,8 +104,8 @@ class MatchTest {
                 new Wicket()
         );
 
-        OverOutcome firstOverOutcomes = new OverOutcome(secondInning, 1, firstOverBallOutComes);
-        OverOutcome secondOverOutcomes = new OverOutcome(secondInning, 2, secondOverBallOutComes);
+        OverOutcome firstOverOutcomes = new OverOutcome("T1P3", secondInning, 1, firstOverBallOutComes);
+        OverOutcome secondOverOutcomes = new OverOutcome("T1P5", secondInning, 2, secondOverBallOutComes);
 
         match.updateScorecard(firstOverOutcomes);
         match.updateScorecard(secondOverOutcomes);
@@ -153,8 +153,8 @@ class MatchTest {
                 new RunOutcome(Run.SIX)
         );
 
-        OverOutcome firstOverOutcomes = new OverOutcome(InningType.FIRST, 1, firstOverBallOutComes);
-        OverOutcome secondOverOutcomes = new OverOutcome(InningType.FIRST, 2, secondOverBallOutComes);
+        OverOutcome firstOverOutcomes = new OverOutcome("T2P3", InningType.FIRST, 1, firstOverBallOutComes);
+        OverOutcome secondOverOutcomes = new OverOutcome("T2P4", InningType.FIRST, 2, secondOverBallOutComes);
 
         match.updateScorecard(firstOverOutcomes);
         match.updateScorecard(secondOverOutcomes);

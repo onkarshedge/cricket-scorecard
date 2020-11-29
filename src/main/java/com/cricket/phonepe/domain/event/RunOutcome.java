@@ -25,6 +25,7 @@ public class RunOutcome extends BallOutcome {
         commonProcessing(scorecard);
         if (getPlayerRuns().shouldChangeStrike()) scorecard.rotateStrike();
         scorecard.incrementNumberOfBalls();
+        scorecard.getCurrentBowler().addRunsConceded(runs);
     }
 
 

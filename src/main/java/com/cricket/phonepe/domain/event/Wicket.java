@@ -19,5 +19,6 @@ public class Wicket extends BallOutcome {
         commonProcessing(scorecard);
         scorecard.handleWicket();
         scorecard.incrementNumberOfBalls();
+        scorecard.getCurrentBowler().incrementWickets();
     }
 }

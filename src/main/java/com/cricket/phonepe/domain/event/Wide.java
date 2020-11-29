@@ -22,13 +22,7 @@ public class Wide extends BallOutcome {
     @Override
     public void processScorecard(Scorecard scorecard) {
         commonProcessing(scorecard);
+        scorecard.getCurrentBowler().incrementWides();
     }
 }
 
-//wd+lg(1)+w
-//-> wide, legBye(1), wicket()
-//-> 1run, wicket()
-//-> legBye(1)
-//team runs = wide + no_ball, legbye
-//individual = normal
-//wicket
