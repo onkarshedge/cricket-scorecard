@@ -61,6 +61,7 @@ public class Scorecard {
         if (overOutcomes.isMaidenOver()) {
             currentBowler.incrementMaidenOvers();
         }
+        currentBowler.incrementNumberOfOvers();
     }
 
     public void incrementNumberOfBalls() {
@@ -88,5 +89,9 @@ public class Scorecard {
             batsmanOnStrike = batsman.get();
             batsmanOnStrike.setStatus(BatsmenStatus.CURRENTLY_PLAYING_ON_STRIKE);
         }
+    }
+
+    public Bowler getBowler(String name) {
+        return bowlers.get(name);
     }
 }

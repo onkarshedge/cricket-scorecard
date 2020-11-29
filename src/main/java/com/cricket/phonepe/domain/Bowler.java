@@ -1,5 +1,6 @@
 package com.cricket.phonepe.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.util.HashMap;

@@ -1,8 +1,8 @@
 package com.cricket.phonepe.domain;
 
-import com.cricket.phonepe.domain.result.Result;
 import com.cricket.phonepe.domain.event.*;
 import com.cricket.phonepe.domain.inning.InningType;
+import com.cricket.phonepe.domain.result.Result;
 import com.cricket.phonepe.domain.result.Victory;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
@@ -53,6 +53,18 @@ class MatchTest {
         assertEquals("T1P1", scoreCard.getBatsmanOnStrike().getName());
         assertEquals("T1P2", scoreCard.getBatsmanOnNonStrike().getName());
 
+        assertThat(scoreCard.getCurrentBowler())
+                .extracting("name",
+                        "wickets",
+                        "maidenOvers",
+                        "numberOfOvers",
+                        "runsConceded",
+                        "wides",
+                        "noBalls"
+                ).contains(
+                "T2P1", 0, 0, 1, 7, 0, 0
+        );
+
     }
 
     @Test
@@ -79,6 +91,18 @@ class MatchTest {
         assertEquals(1, scoreCard.extras());
         assertEquals("T1P4", scoreCard.getBatsmanOnStrike().getName());
         assertEquals("T1P2", scoreCard.getBatsmanOnNonStrike().getName());
+
+        assertThat(scoreCard.getBowler("T2P4"))
+                .extracting("name",
+                        "wickets",
+                        "maidenOvers",
+                        "numberOfOvers",
+                        "runsConceded",
+                        "wides",
+                        "noBalls"
+                ).contains(
+                "T2P4", 2, 0, 1, 15, 1, 0
+        );
     }
 
     @Test
