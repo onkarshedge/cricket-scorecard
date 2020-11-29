@@ -1,4 +1,4 @@
-package com.cricket.phonepe.domain;
+package com.cricket.phonepe.domain.result;
 
 import io.vavr.control.Either;
 import lombok.EqualsAndHashCode;
@@ -28,7 +28,7 @@ public class Victory {
     }
 
     @EqualsAndHashCode
-    static final class ByWickets {
+    public static final class ByWickets {
         int numberOfWickets;
 
         public ByWickets(int numberOfWickets) {

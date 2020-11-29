@@ -1,9 +1,6 @@
 package com.cricket.phonepe.domain.inning;
 
-import com.cricket.phonepe.domain.InvalidInningEventException;
-import com.cricket.phonepe.domain.Scorecard;
 import com.cricket.phonepe.domain.Team;
-import com.cricket.phonepe.domain.event.OverOutcome;
 import lombok.Getter;
 
 @Getter

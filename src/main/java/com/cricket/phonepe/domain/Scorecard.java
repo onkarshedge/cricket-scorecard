@@ -1,9 +1,9 @@
 package com.cricket.phonepe.domain;
 
 import com.cricket.phonepe.domain.event.OverOutcome;
+import com.cricket.phonepe.domain.exception.MinimumPlayerException;
 import lombok.Getter;
 
-import java.util.List;
 import java.util.Optional;
 
 @Getter

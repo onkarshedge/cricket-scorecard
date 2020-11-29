@@ -1,4 +1,4 @@
-package com.cricket.phonepe;
+package com.cricket.phonepe.domain.result;
 
 public class Tie {
     @Override

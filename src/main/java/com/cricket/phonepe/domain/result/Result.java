@@ -1,6 +1,5 @@
-package com.cricket.phonepe;
+package com.cricket.phonepe.domain.result;
 
-import com.cricket.phonepe.domain.Victory;
 import io.vavr.control.Either;
 import lombok.EqualsAndHashCode;
 

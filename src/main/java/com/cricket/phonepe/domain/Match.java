@@ -1,12 +1,14 @@
 package com.cricket.phonepe.domain;
 
 
-import com.cricket.phonepe.Result;
-import com.cricket.phonepe.Tie;
+import com.cricket.phonepe.domain.result.Result;
+import com.cricket.phonepe.domain.result.Tie;
 import com.cricket.phonepe.domain.event.OverOutcome;
+import com.cricket.phonepe.domain.exception.InvalidInningEventException;
 import com.cricket.phonepe.domain.inning.FirstInning;
 import com.cricket.phonepe.domain.inning.InningType;
 import com.cricket.phonepe.domain.inning.SecondInning;
+import com.cricket.phonepe.domain.result.Victory;
 import io.vavr.control.Either;
 
 import java.util.Optional;

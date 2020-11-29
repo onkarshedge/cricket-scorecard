@@ -1,8 +1,9 @@
 package com.cricket.phonepe.domain;
 
-import com.cricket.phonepe.Result;
+import com.cricket.phonepe.domain.result.Result;
 import com.cricket.phonepe.domain.event.*;
 import com.cricket.phonepe.domain.inning.InningType;
+import com.cricket.phonepe.domain.result.Victory;
 import io.vavr.Tuple2;
 import io.vavr.control.Either;
 import org.junit.jupiter.api.Test;
