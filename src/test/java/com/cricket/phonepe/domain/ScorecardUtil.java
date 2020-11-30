@@ -2,6 +2,7 @@ package com.cricket.phonepe.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class ScorecardUtil {
@@ -11,7 +12,7 @@ public class ScorecardUtil {
         batsmen.add(new Batsman(secondPlayerName));
 
         Batsmen battingOrder = new Batsmen(batsmen);
-        return new Scorecard(battingOrder, getBowlers());
+        return new Scorecard(battingOrder, getBowlers(), Optional.empty());
     }
 
     public static Scorecard getScorecardForTwo() {
@@ -20,7 +21,7 @@ public class ScorecardUtil {
         batsmen.add(new Batsman("Player 2"));
 
         Batsmen battingOrder = new Batsmen(batsmen);
-        return new Scorecard(battingOrder, getBowlers());
+        return new Scorecard(battingOrder, getBowlers(), Optional.empty());
     }
 
     public static Scorecard getScorecardForThree(String firstPlayerName, String secondPlayerName, String thirdPlayerName) {
@@ -30,7 +31,7 @@ public class ScorecardUtil {
         batsmen.add(new Batsman(thirdPlayerName));
 
         Batsmen battingOrder = new Batsmen(batsmen);
-        return new Scorecard(battingOrder, getBowlers());
+        return new Scorecard(battingOrder, getBowlers(), Optional.empty());
     }
 
     private static List<Bowler> getBowlers() {

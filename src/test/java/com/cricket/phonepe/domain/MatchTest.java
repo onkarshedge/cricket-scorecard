@@ -1,6 +1,7 @@
 package com.cricket.phonepe.domain;
 
 import com.cricket.phonepe.domain.event.*;
+import com.cricket.phonepe.domain.exception.InvalidInningEventException;
 import com.cricket.phonepe.domain.inning.InningType;
 import com.cricket.phonepe.domain.result.Result;
 import com.cricket.phonepe.domain.result.Victory;
@@ -13,8 +14,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class MatchTest {
 
@@ -156,6 +156,35 @@ class MatchTest {
 
         Result actualResult = optionalResult.get();
         assertEquals(new Victory(teams._1.getName(), Either.left(new Victory.ByRuns(4))), actualResult.getValue().getLeft());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenMoreEventsAreSentAfterMatchCompletion() {
+        Tuple2<Team, Team> teams = TeamUtil.getTeams(5);
+        Match match = new Match(teams._1, teams._2, 2);
+
+        playFirstInnings(match);
+        InningType secondInning = InningType.SECOND;
+
+        List<BallOutcome> firstOverBallOutComes = List.of(
+                new RunScored(Run.FOUR),
+                new RunScored(Run.SIX),
+                new Wicket(),
+                new Wicket(),
+                new RunScored(Run.SINGLE),
+                new RunScored(Run.SINGLE)
+        );
+        List<BallOutcome> secondOverBallOutComes = List.of(
+                new RunScored(Run.SIX),
+                new RunScored(Run.SIX),
+                new RunScored(Run.SIX)
+        );
+
+        OverOutcome firstOverOutcomes = new OverOutcome("T1P3", secondInning, 1, firstOverBallOutComes);
+        OverOutcome secondOverOutcomes = new OverOutcome("T1P5", secondInning, 2, secondOverBallOutComes);
+
+        match.updateScorecard(firstOverOutcomes);
+        assertThrows(InvalidInningEventException.class, () -> match.updateScorecard(secondOverOutcomes));
     }
 
     private void playFirstInnings(Match match) {

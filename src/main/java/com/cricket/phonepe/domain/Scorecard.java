@@ -1,6 +1,7 @@
 package com.cricket.phonepe.domain;
 
 import com.cricket.phonepe.domain.event.OverOutcome;
+import com.cricket.phonepe.domain.exception.InvalidInningEventException;
 import com.cricket.phonepe.domain.exception.MinimumPlayerException;
 import lombok.Getter;
 
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @Getter
 public class Scorecard {
     private final Batsmen batsmen;
+    private Optional<Integer> runsToChase;
     private Batsman batsmanOnStrike;
     private Batsman batsmanOnNonStrike;
     private Bowler currentBowler;
@@ -21,8 +23,9 @@ public class Scorecard {
     private double numberOfBalls;
     private int wickets;
 
-    public Scorecard(Batsmen batsmen, List<Bowler> bowlers) {
+    public Scorecard(Batsmen batsmen, List<Bowler> bowlers, Optional<Integer> runsToChase) {
         this.batsmen = batsmen;
+        this.runsToChase = runsToChase;
         batsmanOnStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
         batsmanOnNonStrike = this.batsmen.nextBatsman().orElseThrow(MinimumPlayerException::new);
 
@@ -54,12 +57,21 @@ public class Scorecard {
 
     public void update(OverOutcome overOutcomes) {
         this.currentBowler = this.bowlers.get(overOutcomes.getBowlerName());
-        overOutcomes.getBallOutcomes().forEach(ballOutcome -> ballOutcome.processScorecard(this));
+        overOutcomes.getBallOutcomes().forEach(ballOutcome -> {
+            if (isComplete()) {
+                throw new InvalidInningEventException("This inning is complete.");
+            }
+            ballOutcome.processScorecard(this);
+        });
         rotateStrike();
         if (overOutcomes.isMaidenOver()) {
             currentBowler.incrementMaidenOvers();
         }
         currentBowler.incrementNumberOfOvers();
+    }
+
+    private boolean isComplete() {
+        return batsmen.noMoreBatsman() || (runsToChase.isPresent() && totalScore() >= runsToChase.get());
     }
 
     public void incrementNumberOfBalls() {
